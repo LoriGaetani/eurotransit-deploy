@@ -21,6 +21,22 @@ services:
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
       port: 8080 # Porta interna del Service Kubernetes per il catalogo.
+    database:
+      enabled: true # Se true crea Secret, Cluster CloudNativePG e variabili datasource per questo servizio.
+      clusterName: eurotransit-app-catalog-db # Nome del Cluster CloudNativePG; il service read/write sara' <clusterName>-rw.
+      databaseName: catalog # Nome del database applicativo creato al bootstrap.
+      username: catalog # Utente proprietario del database applicativo.
+      password: catalog # Password usata per creare il Secret; in produzione meglio passarla da CI/CD.
+      secretName: eurotransit-app-catalog-db-credentials # Secret basic-auth usato sia da CloudNativePG sia dal pod catalog.
+      passwordKey: password # Chiave del Secret letta da Spring come password.
+      instances: 1 # Numero di istanze Postgres; in produzione valuta 3 per alta disponibilita'.
+      imageName: ghcr.io/cloudnative-pg/postgresql:18 # Immagine Postgres usata dal Cluster CloudNativePG.
+      annotations:
+        helm.sh/resource-policy: keep # Evita la cancellazione automatica del Cluster DB se il chart viene disinstallato.
+      storage:
+        size: 1Gi # Dimensione del volume persistente del database.
+      backups:
+        enabled: false # Placeholder per backup futuri; i backup richiedono configurazione object storage.
 
 nameOverride: "" # Permette di sovrascrivere il nome base del chart.
 fullnameOverride: "" # Permette di sovrascrivere il nome completo delle risorse generate.
@@ -35,7 +51,18 @@ autoscaling:
   enabled: false # Disabilita l'HorizontalPodAutoscaler generato dal template scaffold.
 
 ingress:
-  enabled: false # Disabilita l'Ingress finche' non viene configurato l'accesso esterno.
+  enabled: true # Abilita la creazione dell'Ingress per esporre l'app tramite Traefik.
+  className: traefik # Nome dell'IngressClass gestita da Traefik.
+  annotations: {} # Annotazioni opzionali Traefik, ad esempio middleware, entrypoint o redirect.
+  host: eurotransit.local # Host usato dal browser per raggiungere l'app.
+  tls:
+    enabled: false # Metti true se vuoi esporre l'app in HTTPS.
+    secretName: "" # Nome del Secret TLS da usare quando tls.enabled e' true.
+  routes:
+    - path: / # Espone il frontend sulla root dell'host.
+      pathType: Prefix # Prefix instrada tutte le richieste che iniziano con questo path.
+      service: frontend # Nome del servizio applicativo definito sotto services.
+      port: 80 # Porta del Service Kubernetes da raggiungere.
 
 httpRoute:
   enabled: false # Disabilita HTTPRoute/Gateway API finche' non viene configurato un Gateway.

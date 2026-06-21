@@ -1,0 +1,30 @@
+{{- $root := . -}}
+{{- range $name, $svc := .Values.services }}
+{{- if and $svc.enabled $svc.database $svc.database.enabled }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ $svc.database.clusterName }}
+  labels:
+    {{- include "eurotransit-app.labels" $root | nindent 4 }}
+    app.kubernetes.io/component: {{ $name }}
+  {{- with $svc.database.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  instances: {{ $svc.database.instances | default 1 }}
+  {{ with $svc.database.imageName }}
+  imageName: {{ . | quote }}
+  {{- end }}
+  bootstrap:
+    initdb:
+      database: {{ $svc.database.databaseName | quote }}
+      owner: {{ $svc.database.username | quote }}
+      secret:
+        name: {{ $svc.database.secretName }}
+  storage:
+    size: {{ $svc.database.storage.size | default "1Gi" }}
+{{- end }}
+{{- end }}

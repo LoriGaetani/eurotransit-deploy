@@ -29,5 +29,22 @@ spec:
             - name: http
               containerPort: {{ $svc.service.port }}
               protocol: TCP
+          {{ if or (and $svc.database $svc.database.enabled) $svc.extraEnv }}
+          env:
+            {{ if and $svc.database $svc.database.enabled }}
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://{{ $svc.database.clusterName }}-rw:5432/{{ $svc.database.databaseName }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ $svc.database.username | quote }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $svc.database.secretName }}
+                  key: {{ $svc.database.passwordKey | default "password" }}
+            {{- end }}
+            {{ with $svc.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- end }}
 {{- end }}
 {{- end }}
