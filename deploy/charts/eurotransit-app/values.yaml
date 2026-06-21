@@ -26,7 +26,6 @@ services:
       clusterName: eurotransit-app-catalog-db # Nome del Cluster CloudNativePG; il service read/write sara' <clusterName>-rw.
       databaseName: catalog # Nome del database applicativo creato al bootstrap.
       username: catalog # Utente proprietario del database applicativo.
-      password: catalog # Password usata per creare il Secret; in produzione meglio passarla da CI/CD.
       secretName: eurotransit-app-catalog-db-credentials # Secret basic-auth usato sia da CloudNativePG sia dal pod catalog.
       passwordKey: password # Chiave del Secret letta da Spring come password.
       instances: 1 # Numero di istanze Postgres; in produzione valuta 3 per alta disponibilita'.
