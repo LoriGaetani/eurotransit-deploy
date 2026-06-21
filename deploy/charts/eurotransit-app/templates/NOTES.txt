@@ -1,0 +1,13 @@
+Installed services:
+
+{{- $root := . }}
+{{- range $name, $svc := .Values.services }}
+{{- if $svc.enabled }}
+  - {{ include "eurotransit-app.fullname" $root }}-{{ $name }}:{{ $svc.service.port }}
+{{- end }}
+{{- end }}
+
+Port-forward examples:
+
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "eurotransit-app.fullname" . }}-frontend 8080:80
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "eurotransit-app.fullname" . }}-catalog 8081:8080
