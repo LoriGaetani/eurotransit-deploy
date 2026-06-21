@@ -10,13 +10,12 @@ services:
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
       port: 80 # Porta interna del Service Kubernetes per il frontend.
-
   catalog:
     enabled: true # Abilita o disabilita la creazione delle risorse Kubernetes per questo servizio.
     replicaCount: 1 # Numero di pod da avviare per il catalogo.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-catalog # Immagine Docker del servizio catalogo.
-      tag: 1.1.0 # Versione dell'immagine Docker da deployare.
+      tag: 1.10.0 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
@@ -37,19 +36,15 @@ services:
         size: 1Gi # Dimensione del volume persistente del database.
       backups:
         enabled: false # Placeholder per backup futuri; i backup richiedono configurazione object storage.
-
 nameOverride: "" # Permette di sovrascrivere il nome base del chart.
 fullnameOverride: "" # Permette di sovrascrivere il nome completo delle risorse generate.
-
 serviceAccount:
   create: false # Se true crea un ServiceAccount dedicato; con false usa quello default del namespace.
   automount: true # Se true monta automaticamente il token del ServiceAccount nei pod.
   annotations: {} # Annotazioni opzionali da aggiungere al ServiceAccount.
   name: "" # Nome di un ServiceAccount esistente o nome custom se create e' true.
-
 autoscaling:
   enabled: false # Disabilita l'HorizontalPodAutoscaler generato dal template scaffold.
-
 ingress:
   enabled: true # Abilita la creazione dell'Ingress per esporre l'app tramite Traefik.
   className: traefik # Nome dell'IngressClass gestita da Traefik.
@@ -63,6 +58,5 @@ ingress:
       pathType: Prefix # Prefix instrada tutte le richieste che iniziano con questo path.
       service: frontend # Nome del servizio applicativo definito sotto services.
       port: 80 # Porta del Service Kubernetes da raggiungere.
-
 httpRoute:
   enabled: false # Disabilita HTTPRoute/Gateway API finche' non viene configurato un Gateway.
