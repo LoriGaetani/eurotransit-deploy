@@ -5,37 +5,31 @@ services:
     replicaCount: 1 # Numero di pod da avviare per il frontend.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-frontend # Immagine Docker del frontend.
-      tag: 1.1.0 # Versione dell'immagine Docker da deployare.
+      tag: 1.7.0 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
       port: 80 # Porta interna del Service Kubernetes per il frontend.
-
   catalog:
     enabled: true # Abilita o disabilita la creazione delle risorse Kubernetes per questo servizio.
     replicaCount: 1 # Numero di pod da avviare per il catalogo.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-catalog # Immagine Docker del servizio catalogo.
-      tag: 1.1.0 # Versione dell'immagine Docker da deployare.
+      tag: 1.7.0 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
       port: 8080 # Porta interna del Service Kubernetes per il catalogo.
-
 nameOverride: "" # Permette di sovrascrivere il nome base del chart.
 fullnameOverride: "" # Permette di sovrascrivere il nome completo delle risorse generate.
-
 serviceAccount:
   create: false # Se true crea un ServiceAccount dedicato; con false usa quello default del namespace.
   automount: true # Se true monta automaticamente il token del ServiceAccount nei pod.
   annotations: {} # Annotazioni opzionali da aggiungere al ServiceAccount.
   name: "" # Nome di un ServiceAccount esistente o nome custom se create e' true.
-
 autoscaling:
   enabled: false # Disabilita l'HorizontalPodAutoscaler generato dal template scaffold.
-
 ingress:
   enabled: false # Disabilita l'Ingress finche' non viene configurato l'accesso esterno.
-
 httpRoute:
   enabled: false # Disabilita HTTPRoute/Gateway API finche' non viene configurato un Gateway.
