@@ -53,6 +53,10 @@ ingress:
     enabled: false # Metti true se vuoi esporre l'app in HTTPS.
     secretName: "" # Nome del Secret TLS da usare quando tls.enabled e' true.
   routes:
+    - path: /api/catalog # Espone le API del catalogo sotto /api.
+      pathType: Prefix # Prefix instrada anche path come /api/products.
+      service: catalog # Nome del servizio applicativo definito sotto services.
+      port: 8080 # Porta del Service Kubernetes del catalogo.
     - path: / # Espone il frontend sulla root dell'host.
       pathType: Prefix # Prefix instrada tutte le richieste che iniziano con questo path.
       service: frontend # Nome del servizio applicativo definito sotto services.
