@@ -35,6 +35,31 @@ services:
         size: 1Gi # Dimensione del volume persistente del database.
       backups:
         enabled: false # Placeholder per backup futuri; i backup richiedono configurazione object storage.
+  inventory:
+    enabled: true # Abilita o disabilita la creazione delle risorse Kubernetes per questo servizio.
+    replicaCount: 1 # Numero di pod da avviare per l'inventario.
+    image:
+      repository: docker.io/lorenzogaetani/eurotransit-inventory # Immagine Docker del servizio inventario.
+      tag: 1.10.4 # Versione dell'immagine Docker da deployare.
+      pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
+    service:
+      type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
+      port: 8081 # Porta interna del Service Kubernetes per l'inventario.
+    database:
+      enabled: true # Se true crea Secret, Cluster CloudNativePG e variabili datasource per questo servizio.
+      clusterName: eurotransit-app-inventory-db # Nome del Cluster CloudNativePG; il service read/write sara' <clusterName>-rw.
+      databaseName: inventory # Nome del database applicativo creato al bootstrap.
+      username: inventory # Utente proprietario del database applicativo.
+      secretName: eurotransit-app-inventory-db-credentials # Secret basic-auth usato sia da CloudNativePG sia dal pod inventory.
+      passwordKey: password # Chiave del Secret letta da Spring come password.
+      instances: 1 # Numero di istanze Postgres; in produzione valuta 3 per alta disponibilita'.
+      imageName: ghcr.io/cloudnative-pg/postgresql:18 # Immagine Postgres usata dal Cluster CloudNativePG.
+      annotations:
+        helm.sh/resource-policy: keep # Evita la cancellazione automatica del Cluster DB se il chart viene disinstallato.
+      storage:
+        size: 1Gi # Dimensione del volume persistente del database.
+      backups:
+        enabled: false # Placeholder per backup futuri; i backup richiedono configurazione object storage.
 nameOverride: "" # Permette di sovrascrivere il nome base del chart.
 fullnameOverride: "" # Permette di sovrascrivere il nome completo delle risorse generate.
 serviceAccount:
@@ -57,6 +82,10 @@ ingress:
       pathType: Prefix # Prefix instrada anche path come /api/products.
       service: catalog # Nome del servizio applicativo definito sotto services.
       port: 8080 # Porta del Service Kubernetes del catalogo.
+    - path: /api/inventory # Espone le API dell'inventario sotto /api.
+      pathType: Prefix # Prefix instrada anche path come /api/inventory/items.
+      service: inventory # Nome del servizio applicativo definito sotto services.
+      port: 8081 # Porta del Service Kubernetes dell'inventario.
     - path: / # Espone il frontend sulla root dell'host.
       pathType: Prefix # Prefix instrada tutte le richieste che iniziano con questo path.
       service: frontend # Nome del servizio applicativo definito sotto services.
