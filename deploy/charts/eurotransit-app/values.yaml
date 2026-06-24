@@ -68,7 +68,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per gli ordini.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-order # Immagine Docker del servizio ordini.
-      tag: 1.14.0 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.2 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
@@ -124,4 +124,3 @@ ingress:
       port: 80 # Porta del Service Kubernetes da raggiungere.
 httpRoute:
   enabled: false # Disabilita HTTPRoute/Gateway API finche' non viene configurato un Gateway.
-
