@@ -5,7 +5,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per il frontend.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-frontend # Immagine Docker del frontend.
-      tag: 1.12.0 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.0 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
@@ -15,7 +15,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per il catalogo.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-catalog # Immagine Docker del servizio catalogo.
-      tag: 1.10.4 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.0 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
@@ -40,7 +40,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per l'inventario.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-inventory # Immagine Docker del servizio inventario.
-      tag: 1.13.0 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.0 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
@@ -65,7 +65,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per gli ordini.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-order # Immagine Docker del servizio ordini.
-      tag: 1.0.0 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.0 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
