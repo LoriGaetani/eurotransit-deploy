@@ -60,6 +60,9 @@ services:
         size: 1Gi # Dimensione del volume persistente del database.
       backups:
         enabled: false # Placeholder per backup futuri; i backup richiedono configurazione object storage.
+    extraEnv:
+      - name: CATALOG_BASE_URL
+        value: http://eurotransit-app-catalog:8080
   order:
     enabled: true # Abilita o disabilita la creazione delle risorse Kubernetes per questo servizio.
     replicaCount: 1 # Numero di pod da avviare per gli ordini.
