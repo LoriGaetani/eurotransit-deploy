@@ -21,7 +21,8 @@ services:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
       port: 8080 # Porta interna del Service Kubernetes per il catalogo.
     database:
-      enabled: true # Se true crea Secret, Cluster CloudNativePG e variabili datasource per questo servizio.
+      enabled: true # Se true crea Secret, Cluster CloudNativePG e variabili per questo servizio.
+      connectionType: r2dbc # Usa variabili SPRING_R2DBC_* per il servizio WebFlux.
       clusterName: eurotransit-app-catalog-db # Nome del Cluster CloudNativePG; il service read/write sara' <clusterName>-rw.
       databaseName: catalog # Nome del database applicativo creato al bootstrap.
       username: catalog # Utente proprietario del database applicativo.
@@ -74,7 +75,8 @@ services:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
       port: 8082 # Porta interna del Service Kubernetes per gli ordini.
     database:
-      enabled: true # Se true crea Secret, Cluster CloudNativePG e variabili datasource per questo servizio.
+      enabled: true # Se true crea Secret, Cluster CloudNativePG e variabili per questo servizio.
+      connectionType: r2dbc # Usa variabili SPRING_R2DBC_* per il servizio WebFlux.
       clusterName: eurotransit-app-order-db # Nome del Cluster CloudNativePG; il service read/write sara' <clusterName>-rw.
       databaseName: order # Nome del database applicativo creato al bootstrap.
       username: order # Utente proprietario del database applicativo.
@@ -88,6 +90,9 @@ services:
         size: 1Gi # Dimensione del volume persistente del database.
       backups:
         enabled: false # Placeholder per backup futuri; i backup richiedono configurazione object storage.
+    extraEnv:
+      - name: INVENTORY_BASE_URL
+        value: http://eurotransit-app-inventory:8081
 nameOverride: "" # Permette di sovrascrivere il nome base del chart.
 fullnameOverride: "" # Permette di sovrascrivere il nome completo delle risorse generate.
 serviceAccount:

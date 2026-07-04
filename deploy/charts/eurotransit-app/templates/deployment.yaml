@@ -32,6 +32,17 @@ spec:
           {{ if or (and $svc.database $svc.database.enabled) $svc.extraEnv }}
           env:
             {{ if and $svc.database $svc.database.enabled }}
+            {{- if eq ($svc.database.connectionType | default "jdbc") "r2dbc" }}
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://{{ $svc.database.clusterName }}-rw:5432/{{ $svc.database.databaseName }}
+            - name: SPRING_R2DBC_USERNAME
+              value: {{ $svc.database.username | quote }}
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $svc.database.secretName }}
+                  key: {{ $svc.database.passwordKey | default "password" }}
+            {{- else }}
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://{{ $svc.database.clusterName }}-rw:5432/{{ $svc.database.databaseName }}
             - name: SPRING_DATASOURCE_USERNAME
@@ -41,6 +52,7 @@ spec:
                 secretKeyRef:
                   name: {{ $svc.database.secretName }}
                   key: {{ $svc.database.passwordKey | default "password" }}
+            {{- end }}
             {{- end }}
             {{ with $svc.extraEnv }}
             {{- toYaml . | nindent 12 }}
