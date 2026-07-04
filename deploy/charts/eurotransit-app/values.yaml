@@ -5,7 +5,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per il frontend.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-frontend # Immagine Docker del frontend.
-      tag: 1.14.3 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.4 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
