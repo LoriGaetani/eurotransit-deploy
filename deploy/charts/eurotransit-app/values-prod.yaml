@@ -14,18 +14,19 @@ sealedSecrets:
     encryptedData:
       username: "AgA5w7j/S3VsIRJKSuK0AagzGoPOLJGHyPHt8Bu/5GQfLisiFFDCimT+sLjIZOyhXPzNCcHbjPPBtF7zqNR3SlJIFJ3d5fuInqKW7LquxA7hRLZMGtEVqUDA6GXyJRMZVemMZMJ99Otd8m8XdfzrWds/ZnwHPXwVJ8WW/tDjM+o7yl/GzoxbLspfvH7Z79Kg5tinnSvj+apEeK3e4zozofpI4AnRRbbNNKmMgKIMOcbfRHsgE7Vy7i06nlALUyhWTOYycwBPNwptkWWo/sRhyV5RMQBEV7apgqnLfJ37o+AcC7YZZ6qCBcH3AI9Xra8eNSfB08npBpjhMgCwCT+m+2of8Z9jsU7Ql8QIGp2eaqaCRF+bCAIaPIjVdm+DXKpst3goCK5hg2hV/ADHHJ6zvOO6RwZNbKoftUXEoxrYe7MeOM/+jA/ey7oNnpciOuqMxo2r8o7f2ViY++TMmChrLPytParz0tffuBAVOcZ9+NsVlPI0k0pZ0lX2PZYYCl5dj1dDT69+wh5cXXu1qYbWc+1JylT5r22FbCo/WHKnfI2glRnNvQXdsqe3qffK0FRwEGnkauBlQgQLvpTMF56AvcNcBCilBn9II+YY4LDtSTVmMOdJR5S/EyTsX/VUWpRzWnWv1DTuQRXfOIuHnWWbTByqSg2+Kx612p9E/2X8c1Aa3zZnlPwxkSNAqVjFb18ZSbUXCBq0ag=="
       password: "AgDF6QAOcDsloi75Oerwgs8uhmHYjycoBlYLn2vJegr97PvLbAuXJak+56GBQGEc9pYI6kqIyABzf3DX9LX9MENtoGFpbjom+X7NsZD26rJ2Oi5Qzb87EDEPEYK6fLhmqaWmzxUEYW99FdrcNWMeqiphpZqIlFa6FeBCRInPjedXth5nClw/pdl9KLjhc5GEmNOhoGxWVsR2WHjTAFnDjRV6KJs9JT4tQhXeXX/tpF0vp2vaT8GjrthMR42WbcL5EKhIjGMy3NRCZOT0OS6DYdTwnQ/5oZ5sUEJNL6YkYhf5iNIxFHIUYEyb4BzhPL3NMvNqxu/yCQpxu/VWf5SUjZGVNEJevB6FvFzltr2+OI7bQ8qbYarrDtz+vKM7PH1GLW73Gy67yJDEVL+5uUx+cH24RNe/arP/xWSJSOavWk0X95Y8xpSSMpoe8Yui1HrbUH/0/LuLSHNtx7vUGVrTFT/O+pCr/8ROJEAAyG97eEyW0+RZ2FfT/W53UtQYPZl2mdP9ysJi/KpfNMkJTVyNlmR/JpNfoPowW8ljIYWO9UoAeG/KSCrwQ2He3mdBJ2jjgXFeL31VczArcbJZ7Qn5FgY3OzLyQwTs/gSFzV1cpQ3g0cOmvsyLebeCBrDo1GPrj5sCu3eE7iPGKGLh4ktppDZCdfktnlBZ4Z/q6YiBdx9ABnF+s8cZ0i6/TbUEkgGz3W2pS9jj653L5n4vQTGGjJUnGBTrNqq9FhanXA=="
-
 services:
   frontend:
     replicaCount: 1
     image:
-      tag: 1.14.4
+      tag: v1.14.7
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-frontend
   inventory:
     replicaCount: 1
     image:
-      tag: 1.14.5
+      tag: v1.14.7
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-inventory
     extraEnv:
       - name: CATALOG_BASE_URL
         value: http://eurotransit-app-prod-catalog:8080
@@ -34,18 +35,19 @@ services:
   catalog:
     replicaCount: 1
     image:
-      tag: 1.14.3
+      tag: v1.14.7
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-catalog
   order:
     replicaCount: 1
     image:
-      tag: 1.14.5
+      tag: v1.14.7
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-order
     extraEnv:
       - name: INVENTORY_BASE_URL
         value: http://eurotransit-app-prod-inventory:8081
       - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
         value: eurotransit-kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
-
 ingress:
   host: eurotransit.local
