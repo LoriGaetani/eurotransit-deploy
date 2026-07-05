@@ -41,7 +41,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per l'inventario.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-inventory # Immagine Docker del servizio inventario.
-      tag: 1.14.3 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.5 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
@@ -71,7 +71,7 @@ services:
     replicaCount: 1 # Numero di pod da avviare per gli ordini.
     image:
       repository: docker.io/lorenzogaetani/eurotransit-order # Immagine Docker del servizio ordini.
-      tag: 1.14.3 # Versione dell'immagine Docker da deployare.
+      tag: 1.14.5 # Versione dell'immagine Docker da deployare.
       pullPolicy: IfNotPresent # Scarica l'immagine solo se non e' gia' presente sul nodo.
     service:
       type: ClusterIP # Espone il servizio solo dentro il cluster Kubernetes.
