@@ -64,6 +64,8 @@ services:
     extraEnv:
       - name: CATALOG_BASE_URL
         value: http://eurotransit-app-catalog:8080
+      - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+        value: eurotransit-kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
   order:
     enabled: true # Abilita o disabilita la creazione delle risorse Kubernetes per questo servizio.
     replicaCount: 1 # Numero di pod da avviare per gli ordini.
@@ -93,6 +95,8 @@ services:
     extraEnv:
       - name: INVENTORY_BASE_URL
         value: http://eurotransit-app-inventory:8081
+      - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+        value: eurotransit-kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
 nameOverride: "" # Permette di sovrascrivere il nome base del chart.
 fullnameOverride: "" # Permette di sovrascrivere il nome completo delle risorse generate.
 serviceAccount:

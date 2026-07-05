@@ -1,0 +1,13 @@
+# product-reserved-topic.yaml
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: product-reserved
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: eurotransit-kafka
+spec:
+  partitions: 1
+  replicas: 1
+  config:
+    retention.ms: 604800000
