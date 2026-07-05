@@ -1,17 +1,18 @@
 # Override per l'ambiente di test.
 fullnameOverride: eurotransit-app-test
-
 services:
   frontend:
     replicaCount: 1
     image:
-      tag: 1.14.4
+      tag: 1.14.6
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-frontend
   inventory:
     replicaCount: 1
     image:
-      tag: 1.14.5
+      tag: 1.14.6
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-inventory
     extraEnv:
       - name: CATALOG_BASE_URL
         value: http://eurotransit-app-test-catalog:8080
@@ -20,18 +21,19 @@ services:
   catalog:
     replicaCount: 1
     image:
-      tag: 1.14.3
+      tag: 1.14.6
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-catalog
   order:
     replicaCount: 1
     image:
-      tag: 1.14.5
+      tag: 1.14.6
       pullPolicy: IfNotPresent
+      repository: docker.io/lorenzogaetani/eurotransit-order
     extraEnv:
       - name: INVENTORY_BASE_URL
         value: http://eurotransit-app-test-inventory:8081
       - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
         value: eurotransit-kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
-
 ingress:
   host: test.eurotransit.local
