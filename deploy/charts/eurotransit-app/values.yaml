@@ -99,6 +99,23 @@ services:
         value: eurotransit-kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
 nameOverride: "" # Permette di sovrascrivere il nome base del chart.
 fullnameOverride: "" # Permette di sovrascrivere il nome completo delle risorse generate.
+sealedSecrets:
+  enabled: false # Metti true negli override ambiente dopo aver generato encryptedData con kubeseal per quel namespace.
+  catalog:
+    enabled: true
+    encryptedData:
+      username: ""
+      password: ""
+  inventory:
+    enabled: true
+    encryptedData:
+      username: ""
+      password: ""
+  order:
+    enabled: true
+    encryptedData:
+      username: ""
+      password: ""
 serviceAccount:
   create: false # Se true crea un ServiceAccount dedicato; con false usa quello default del namespace.
   automount: true # Se true monta automaticamente il token del ServiceAccount nei pod.
