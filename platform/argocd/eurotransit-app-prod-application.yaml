@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: eurotransit-app
+  name: eurotransit-app-prod
   namespace: argocd
 spec:
   project: default
@@ -10,10 +10,13 @@ spec:
     targetRevision: master
     path: deploy/charts/eurotransit-app
     helm:
-      releaseName: eurotransit-app
+      releaseName: eurotransit-app-prod
+      valueFiles:
+        - values.yaml
+        - values-prod.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: eurotransit-app
+    namespace: eurotransit-app-prod
   syncPolicy:
     automated:
       prune: true
