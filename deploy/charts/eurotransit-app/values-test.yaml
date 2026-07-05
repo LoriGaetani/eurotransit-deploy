@@ -24,7 +24,7 @@ services:
   inventory:
     replicaCount: 1
     image:
-      tag: 1.14.6
+      tag: 1.14.8
       pullPolicy: IfNotPresent
       repository: docker.io/lorenzogaetani/eurotransit-inventory
     extraEnv:
@@ -41,7 +41,7 @@ services:
   order:
     replicaCount: 1
     image:
-      tag: 1.14.6
+      tag: 1.14.8
       pullPolicy: IfNotPresent
       repository: docker.io/lorenzogaetani/eurotransit-order
     extraEnv:
