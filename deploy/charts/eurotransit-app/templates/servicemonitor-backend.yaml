@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "eurotransit-app.fullname" . }}-backend
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eurotransit-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+    release: kube-prometheus-stack
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "eurotransit-app.selectorLabels" . | nindent 6 }}
+    matchExpressions:
+      - key: app.kubernetes.io/component
+        operator: In
+        values:
+          - catalog
+          - inventory
+          - order
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 15s
+      scrapeTimeout: 5s
